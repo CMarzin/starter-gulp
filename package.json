@@ -1,0 +1,30 @@
+{
+  "name": "gulp-es6",
+  "version": "1.0.0",
+  "description": "gulp compile es6/sass",
+  "main": "gulpfile.babel.js",
+  "scripts": {
+    "dev": "gulp dev",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm install gulp-cli && gulp build"
+  },
+  "author": "corentinmarzin@free.fr",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.0.0-bridge.0",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/register": "^7.4.0",
+    "babelify": "^7.3.0",
+    "browser-sync": "^2.23.6",
+    "browserify": "^16.1.1",
+    "gulp": "^4.0.0",
+    "gulp-autoprefixer": "^5.0.0",
+    "gulp-connect": "^5.5.0",
+    "gulp-sass": "^4.0.2",
+    "vinyl-source-stream": "^2.0.0"
+  },
+  "dependencies": {
+    "gulp-cli": "^2.0.1",
+    "node-notifier": "^5.2.1"
+  }
+}
