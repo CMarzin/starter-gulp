@@ -4,4 +4,8 @@ let test = {
   }
 }
 
-test.coucou()
+// test.coucou()
+
+import Test from './Test'
+
+console.log('Test', Test)

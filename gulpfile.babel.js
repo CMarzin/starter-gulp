@@ -1,11 +1,12 @@
 import gulp from 'gulp';
+import babel from 'gulp-babel';
 import babelify from 'babelify';
 import browserify from 'browserify';
 import source from 'vinyl-source-stream';
 import browserSync from 'browser-sync';
 import sass from 'gulp-sass';
 import autoprefixer from 'gulp-autoprefixer';
-import notifier from 'node-notifier'
+import plumber from 'gulp-plumber';
 
 gulp.task('html', () => {
     return gulp.src('./app/*.html')
@@ -22,29 +23,33 @@ gulp.task('styles', () => {
 });
 
 gulp.task('scripts', () => {
-    return browserify({
-            entries: ['./app/scripts/main.js']
-        })
-        .transform(babelify.configure({
-            presets: ['es2015']
-        }))
-        .bundle()
-        .on('error', (error) => {
-            console.log(error.stack)
-            notifier.notify({
-                'title': 'Compile Error',
-                'message': error.message
-              });
-        })
-        .pipe(source('bundle.js'))
-        .pipe(gulp.dest('./build/js'))
-        .pipe(browserSync.stream());
+  const bundleStream = browserify({
+    entries: './app/scripts/main.js',
+    'transform': [
+      babelify.configure({
+          'presets': ['@babel/preset-env']
+      })
+  ]
+  }).bundle()
+
+  bundleStream
+    .pipe(plumber())
+    // .pipe(babel({
+    //     presets: ['@babel/preset-env']
+    // }))
+    .pipe(source('bundle.js'))
+    .pipe(gulp.dest('./build/js'))
+    .pipe(browserSync.stream({
+      stream: true
+    }));
 });
 
 gulp.task('startServer', () => {
     browserSync.init({
-        server: './build'
+        server: './build',
+        open: false
     });
+    gulp.watch('./app/scripts/**/*.js', gulp.series('scripts'));
 });
 
 gulp.task('watch', () => {
